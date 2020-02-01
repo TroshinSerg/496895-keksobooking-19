@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Трошин](https://up.htmlacademy.ru/javascript/19/user/496895).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Трошин](https://up.htmlacademy.ru/javascript/19/user/496895).
 
 ---
 
