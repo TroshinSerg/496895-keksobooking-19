@@ -55,10 +55,7 @@
   }
 
   function onError(errorMessage) {
-    var ERROR_MESSAGE_TEMPLATE = document.querySelector('#error').content;
-    var errorPopup = ERROR_MESSAGE_TEMPLATE.cloneNode(true);
-    errorPopup.querySelector('.error__message').textContent = errorMessage;
-    document.body.appendChild(errorPopup);
+    window.messages.createErrorPopup(errorMessage);
   }
 
   setAddressField();

@@ -12,6 +12,7 @@
     xhr.responseType = 'json';
 
     xhr.open('GET', URL);
+    xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === statusCode.OK) {
@@ -26,10 +27,9 @@
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeot + 'мс');
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = TIMEOUT;
     xhr.send();
   };
 })();
