@@ -49,6 +49,17 @@
     }
   };
 
+  function onSuccess(data) {
+    window.loadedData = data;
+  }
+
+  function onError(errorMessage) {
+    var ERROR_MESSAGE_TEMPLATE = document.querySelector('#error').content;
+    var errorPopup = ERROR_MESSAGE_TEMPLATE.cloneNode(true);
+    errorPopup.querySelector('.error__message').textContent = errorMessage;
+    document.body.appendChild(errorPopup);
+  }
+
   setAddressField();
 
   function createMapElements(mocks) {
@@ -119,6 +130,7 @@
 
     if (window.data.map.classList.contains('map--faded')) {
       activatePage();
+      window.load(onSuccess, onError);
     }
   }
 
