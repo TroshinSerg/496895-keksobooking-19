@@ -9,7 +9,7 @@
       var randomIndex = this.getRandomNum(0, array.length - 1);
       return (isRemove) ? array.splice(randomIndex, 1).toString() : array[randomIndex];
     },
-    createRandomArray: function (array) {
+    getRandomArray: function (array) {
       var copyOfArray = array.slice();
       var randomArray = [];
       var counter = this.getRandomNum(1, copyOfArray.length);
