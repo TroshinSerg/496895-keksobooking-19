@@ -10,8 +10,6 @@
   };
 
   var AD_FORM = document.forms[1];
-  var ROOMS_NOT_GUEST_VALUE = 100;
-  var CAPACITY_NOT_GUEST_VALUE = 0;
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
   var INVALID_FIELD_BORDER_COLOR = 'red';
   var SELECT_NAME_TIMEIN = 'timein';
@@ -110,21 +108,20 @@
   }
 
   function onCapacityChange() {
-    var selectedRoomsOption = AD_FORM.rooms[AD_FORM.rooms.selectedIndex];
-    var selectedCapacityOption = AD_FORM.capacity[AD_FORM.capacity.selectedIndex];
+    var roomsCount = +AD_FORM.rooms.value;
+    var guestCount = +AD_FORM.capacity.value;
 
-    if (+selectedCapacityOption.value > +selectedRoomsOption.value) {
+    if (roomsCount !== 100 && roomsCount < guestCount) {
       addFieldBorderColor(AD_FORM.capacity);
       AD_FORM.capacity.setCustomValidity(VALIDATION_ERROR_MESSAGES.manyGuest);
       return false;
-    }
-    if (+selectedRoomsOption.value === ROOMS_NOT_GUEST_VALUE && +selectedCapacityOption.value !== CAPACITY_NOT_GUEST_VALUE) {
+    } else if (roomsCount === 100 && guestCount !== 0) {
       addFieldBorderColor(AD_FORM.capacity);
       AD_FORM.capacity.setCustomValidity(VALIDATION_ERROR_MESSAGES.notGuest);
       return false;
     }
     removeFieldBorderColor(AD_FORM.capacity);
-    AD_FORM.capacity.removeAttribute('style');
+    AD_FORM.capacity.setCustomValidity('');
     return true;
   }
 
@@ -156,7 +153,7 @@
   }
 
   function onAdFormSubmit(evt) {
-    if (!onTitleInput() && !onPriceInput() && !onCapacityChange(evt)) {
+    if (!onTitleInput() && !onPriceInput() && !onCapacityChange()) {
       evt.preventDefault();
     }
   }
