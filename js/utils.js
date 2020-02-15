@@ -11,12 +11,9 @@
     },
     getRandomArray: function (array) {
       var copyOfArray = array.slice();
-      var randomArray = [];
-      var counter = this.getRandomNum(1, copyOfArray.length);
-
-      for (var i = 0; i < counter; i++) {
-        randomArray.push(this.getRandomElement(copyOfArray, true));
-      }
+      var randomArray = copyOfArray.filter(function (item, index, arr) {
+        return index >= UTILS.getRandomNum(1, arr.length);
+      });
       return randomArray;
     },
     pluralize: function (num, endings) {
