@@ -18,7 +18,7 @@
         randomArray.push(this.getRandomElement(copyOfArray, true));
       }
       return randomArray;
-    }, 
+    },
     pluralize: function (num, endings) {
       var remainder = num % 100;
       if (remainder === 0 || remainder > 4 && remainder !== 1) {
