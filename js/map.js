@@ -136,7 +136,7 @@
     window.data.map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     window.form.enableElements(window.form.formsNodes);
-    window.form.onTypeSelectChange();
+    window.form.changePriceField();
   }
 
   function setAddressField(offsetFromCenter) {

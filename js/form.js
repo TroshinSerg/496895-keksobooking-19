@@ -2,28 +2,28 @@
 
 (function () {
   var FORMS_NODES = document.querySelectorAll('form > select, form > fieldset');
-  var OFFER_TYPES_MIN_PRICES = {
-    palace: 10000,
-    flat: 1000,
-    house: 5000,
-    bungalo: 0
+
+  var ErrorMessage = {
+    MORE_GUEST: 'Гостей больше, чем комнат!',
+    NOT_GUEST: 'Не для гостей!',
+    MIN_PRICE: 'Цена ниже минимальной!',
+    MAX_PRICE: 'Цена больше максимальной!'
   };
 
+  var OfferTypeMinPrice = {
+    PALACE: 10000,
+    FLAT: 1000,
+    HOUSE: 5000,
+    BUNGALO: 0
+  };
+
+  var MAX_PRICE = 1000000;
   var AD_FORM = document.forms[1];
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
   var INVALID_FIELD_BORDER_COLOR = 'red';
   var SELECT_NAME_TIMEIN = 'timein';
   var SELECT_NAME_TIMEOUT = 'timeout';
-
-  var AD_FORM_VALIDATE_VALUES = {
-    titleMin: 30,
-    priceMax: 1000000
-  };
-
-  var VALIDATION_ERROR_MESSAGES = {
-    notGuest: 'Не для гостей',
-    manyGuest: 'Гостей большей, чем комнат!'
-  };
+  var TITLE_MIN_LENGTH = 30;
 
   var UTILS = {
     adForm: AD_FORM,
@@ -33,10 +33,10 @@
         node.removeAttribute('disabled');
       });
     },
-    onTypeSelectChange: function () {
-      var selectedValue = AD_FORM.type[AD_FORM.type.selectedIndex].value;
-      AD_FORM.price.min = OFFER_TYPES_MIN_PRICES[selectedValue];
-      AD_FORM.price.placeholder = OFFER_TYPES_MIN_PRICES[selectedValue];
+    changePriceField: function () {
+      var typeValue = AD_FORM.type.value.toUpperCase();
+      AD_FORM.price.min = OfferTypeMinPrice[typeValue];
+      AD_FORM.price.placeholder = OfferTypeMinPrice[typeValue];
     },
     addHandlers: function (handlers) {
       handlers.forEach(function (item) {
@@ -49,7 +49,7 @@
     {
       node: AD_FORM.type,
       eventType: 'change',
-      handler: UTILS.onTypeSelectChange
+      handler: onTypeChange
     },
     {
       node: AD_FORM.timein,
@@ -113,11 +113,11 @@
 
     if (roomsCount !== 100 && roomsCount < guestCount) {
       addFieldBorderColor(AD_FORM.capacity);
-      AD_FORM.capacity.setCustomValidity(VALIDATION_ERROR_MESSAGES.manyGuest);
+      AD_FORM.capacity.setCustomValidity(ErrorMessage.MORE_GUEST);
       return false;
     } else if (roomsCount === 100 && guestCount !== 0) {
       addFieldBorderColor(AD_FORM.capacity);
-      AD_FORM.capacity.setCustomValidity(VALIDATION_ERROR_MESSAGES.notGuest);
+      AD_FORM.capacity.setCustomValidity(ErrorMessage.NOT_GUEST);
       return false;
     }
     removeFieldBorderColor(AD_FORM.capacity);
@@ -127,7 +127,7 @@
 
   function onTitleInput() {
     var titleFieldValue = AD_FORM.title.value.trim();
-    if (!titleFieldValue || titleFieldValue.length < AD_FORM_VALIDATE_VALUES.titleMin) {
+    if (!titleFieldValue || titleFieldValue.length < TITLE_MIN_LENGTH) {
       addFieldBorderColor(AD_FORM.title);
       return false;
     }
@@ -135,14 +135,26 @@
     return true;
   }
 
+  function onTypeChange() {
+    UTILS.changePriceField();
+    onPriceInput();
+  }
+
   function onPriceInput() {
-    var priceFieldValue = parseInt(AD_FORM.price.value, 10);
-    var minValue = parseInt(AD_FORM.price.min, 10);
-    if (!priceFieldValue || priceFieldValue < minValue || priceFieldValue > AD_FORM_VALIDATE_VALUES.priceMax) {
+    var typeValue = AD_FORM.type.value.toUpperCase();
+    var currentValue = +AD_FORM.price.value;
+
+    if (currentValue < OfferTypeMinPrice[typeValue]) {
       addFieldBorderColor(AD_FORM.price);
+      AD_FORM.price.setCustomValidity(ErrorMessage.MIN_PRICE);
+      return false;
+    } else if (currentValue > MAX_PRICE) {
+      addFieldBorderColor(AD_FORM.price);
+      AD_FORM.price.setCustomValidity(ErrorMessage.MAX_PRICE);
       return false;
     }
     removeFieldBorderColor(AD_FORM.price);
+    AD_FORM.price.setCustomValidity('');
     return true;
   }
 
