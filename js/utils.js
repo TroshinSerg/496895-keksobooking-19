@@ -9,11 +9,12 @@
       var randomIndex = this.getRandomNum(0, array.length - 1);
       return (isRemove) ? array.splice(randomIndex, 1).toString() : array[randomIndex];
     },
+    getZeroOrOne: function () {
+      return Math.floor(Math.random() * 2);
+    },
     getRandomArray: function (array) {
       var copyOfArray = array.slice();
-      var randomArray = copyOfArray.filter(function () {
-        return Math.floor(Math.random() * 2);
-      });
+      var randomArray = copyOfArray.filter(this.getZeroOrOne);
       return randomArray;
     },
     pluralize: function (num, endings) {
