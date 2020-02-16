@@ -11,8 +11,8 @@
     },
     getRandomArray: function (array) {
       var copyOfArray = array.slice();
-      var randomArray = copyOfArray.filter(function (item, index, arr) {
-        return index >= UTILS.getRandomNum(1, arr.length);
+      var randomArray = copyOfArray.filter(function () {
+        return Math.floor(Math.random() * 2);
       });
       return randomArray;
     },
