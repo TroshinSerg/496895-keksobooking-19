@@ -54,9 +54,9 @@
           'guests': window.utils.getRandomNum(0, MAX_COUNT_ROOM),
           'checkin': window.utils.getRandomElement(OFFER_TIMES),
           'checkout': window.utils.getRandomElement(OFFER_TIMES),
-          'features': window.utils.createRandomArray(OFFER_FEATURES),
+          'features': window.utils.getRandomArray(OFFER_FEATURES),
           'description': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque dignissimos optio nesciunt sapiente tempore totam. Provident velit quas eligendi tempora molestias necessitatibus fugiat natus odit sunt, numquam unde? Saepe, assumenda!',
-          'photos': window.utils.createRandomArray(OFFER_PHOTOS)
+          'photos': window.utils.getRandomArray(OFFER_PHOTOS)
         },
 
         'location': {

@@ -33,7 +33,7 @@
     return nodes;
   }
 
-  function createPhotosFragment(sources, clonableElement) {
+  function renderPhotos(sources, clonableElement) {
     var fragment = document.createDocumentFragment();
     sources.forEach(function (src) {
       var clonedNode = clonableElement.cloneNode(true);
@@ -43,7 +43,7 @@
     return fragment;
   }
 
-  function createFeaturesFragment(features, nodes) {
+  function renderFeatures(features, nodes) {
     var fragment = document.createDocumentFragment();
     var objectOfNodes = createObjectOfNodes(nodes);
 
@@ -66,7 +66,7 @@
     return nodes;
   }
 
-  function createMapPopup(item) {
+  function renderMapPopup(item) {
     var clonedPopup = MAP_CARD_TEMPLATE.cloneNode(true);
     var fragment = document.createDocumentFragment();
     var clonedNodes = clonePopupNodes(SELECTORS_POPUP_NODES, clonedPopup);
@@ -75,17 +75,17 @@
     clonedNodes.address.textContent = item.offer.address;
     clonedNodes.price.textContent = item.offer.price + '₽/ночь';
     clonedNodes.type.textContent = window.data.offerTypesLibs[item.offer.type];
-    clonedNodes.capacity.textContent = item.offer.rooms + ' ' + window.utils.getEndingWord(item.offer.rooms, VARIANTS_WORD_ROOMS) + ' для ' + item.offer.guests + ' ' + window.utils.getEndingWord(item.offer.guests, VARIANTS_WORD_GUESTS) + '.';
+    clonedNodes.capacity.textContent = item.offer.rooms + ' ' + window.utils.pluralize(item.offer.rooms, VARIANTS_WORD_ROOMS) + ' для ' + item.offer.guests + ' ' + window.utils.pluralize(item.offer.guests, VARIANTS_WORD_GUESTS) + '.';
     clonedNodes.time.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
     clonedNodes.description.textContent = item.offer.description;
     clonedNodes.avatar.src = item.author.avatar;
 
     clonedNodes.featureList.innerHTML = '';
-    var featuresFragment = createFeaturesFragment(item.offer.features, clonedNodes.features);
+    var featuresFragment = renderFeatures(item.offer.features, clonedNodes.features);
     clonedNodes.featureList.appendChild(featuresFragment);
 
     clonedNodes.photoList.innerHTML = '';
-    var photosFragment = createPhotosFragment(item.offer.photos, clonedNodes.photo);
+    var photosFragment = renderPhotos(item.offer.photos, clonedNodes.photo);
     clonedNodes.photoList.appendChild(photosFragment);
 
     fragment.appendChild(clonedPopup);
@@ -94,5 +94,5 @@
     clonedNodes.close.addEventListener('click', window.map.onMapPopupCloseClick);
   }
 
-  window.card.createMapPopup = createMapPopup;
+  window.card.renderMapPopup = renderMapPopup;
 })();

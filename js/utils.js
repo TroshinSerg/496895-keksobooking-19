@@ -9,17 +9,15 @@
       var randomIndex = this.getRandomNum(0, array.length - 1);
       return (isRemove) ? array.splice(randomIndex, 1).toString() : array[randomIndex];
     },
-    createRandomArray: function (array) {
+    getZeroOrOne: function () {
+      return Math.floor(Math.random() * 2);
+    },
+    getRandomArray: function (array) {
       var copyOfArray = array.slice();
-      var randomArray = [];
-      var counter = this.getRandomNum(1, copyOfArray.length);
-
-      for (var i = 0; i < counter; i++) {
-        randomArray.push(this.getRandomElement(copyOfArray, true));
-      }
+      var randomArray = copyOfArray.filter(this.getZeroOrOne);
       return randomArray;
     },
-    getEndingWord: function (num, endings) {
+    pluralize: function (num, endings) {
       var remainder = num % 100;
       if (remainder === 0 || remainder > 4 && remainder !== 1) {
         return endings[2];

@@ -42,12 +42,21 @@
       var currentPin = evt.currentTarget;
 
       window.map.onMapPopupCloseClick();
-      window.card.createMapPopup(window.data.mocks[currentPin.dataset.id]);
+      window.card.renderMapPopup(window.loadedData[currentPin.dataset.id]);
 
       currentPin.classList.add('map__pin--active');
       document.addEventListener('keydown', onMapPopupEscPress);
     }
   };
+
+  function onSuccess(data) {
+    window.loadedData = data;
+    createMapElements(window.loadedData);
+  }
+
+  function onError(errorMessage) {
+    window.messages.createErrorPopup(errorMessage);
+  }
 
   setAddressField();
 
@@ -119,15 +128,15 @@
 
     if (window.data.map.classList.contains('map--faded')) {
       activatePage();
+      window.load(onSuccess, onError);
     }
   }
 
   function activatePage() {
     window.data.map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
-    createMapElements(window.data.mocks);
     window.form.enableElements(window.form.formsNodes);
-    window.form.onTypeSelectChange();
+    window.form.changePriceField();
   }
 
   function setAddressField(offsetFromCenter) {
