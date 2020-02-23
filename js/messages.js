@@ -40,7 +40,11 @@
   window.messages = {
     createErrorPopup: function (messageText) {
       var clonedErrorPopup = ERROR_MESSAGE_TEMPLATE.cloneNode(true);
-      clonedErrorPopup.querySelector('.error__message').textContent = messageText;
+      
+      if (messageText !== undefined) {
+        clonedErrorPopup.querySelector('.error__message').textContent = messageText;
+      }
+      
       MAIN.appendChild(clonedErrorPopup);
 
       var errorPopup = MAIN.querySelector('.error');

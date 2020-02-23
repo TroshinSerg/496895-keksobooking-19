@@ -164,9 +164,18 @@
     AD_FORM[selectName][AD_FORM[currentSelectName].selectedIndex].selected = true;
   }
 
+  function onSuccessSend() {
+    window.messages.createSuccessPopup();
+  }
+  
+  function onErrorSend() {
+    window.messages.createErrorPopup();
+  }
+
   function onAdFormSubmit(evt) {
-    if (!onTitleInput() && !onPriceInput() && !onCapacityChange()) {
-      evt.preventDefault();
+    evt.preventDefault();
+    if (onTitleInput() && onPriceInput() && onCapacityChange()) {
+      window.server(onErrorSend, onSuccessSend, new FormData(AD_FORM));
     }
   }
 

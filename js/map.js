@@ -4,11 +4,18 @@
 
   var MAP_PIN_LIST = document.querySelector('.map__pins');
   var MAP_MAIN_PIN = document.querySelector('.map__pin--main');
+  var isMapActive = false;
+
   var MAP_MAIN_PIN_SIZE = {
     size: 65,
     sizeWithPoint: 77,
     halfSize: 33,
     halfSizeWithPoint: 55
+  };
+
+  var DefaultСoordinate = {
+    X: parseFloat(MAP_MAIN_PIN.style.left),
+    Y: parseFloat(MAP_MAIN_PIN.style.top)
   };
 
   var KEYCODES = {
@@ -60,8 +67,8 @@
 
   setAddressField();
 
-  function createMapElements(mocks) {
-    MAP_PIN_LIST.appendChild(window.pin.createPinsFragment(mocks));
+  function createMapElements(data) {
+    MAP_PIN_LIST.appendChild(window.pin.createPinsFragment(data));
   }
 
   function onMapPinMainKeydown(evt) {
@@ -128,7 +135,7 @@
 
     if (window.data.map.classList.contains('map--faded')) {
       activatePage();
-      window.load(onSuccess, onError);
+      window.server(onError, onSuccess);
     }
   }
 
@@ -140,10 +147,8 @@
   }
 
   function setAddressField(offsetFromCenter) {
-    var topCoord = parseFloat(MAP_MAIN_PIN.style.top);
-    var top = (offsetFromCenter !== undefined) ? topCoord + offsetFromCenter : topCoord;
-    var left = parseFloat(MAP_MAIN_PIN.style.left);
-    window.form.adForm.address.value = (left + MAP_MAIN_PIN_SIZE.halfSize) + ', ' + (top + MAP_MAIN_PIN_SIZE.halfSize);
+    var top = (offsetFromCenter !== undefined) ? DefaultСoordinate.Y + offsetFromCenter : DefaultСoordinate.Y;
+    window.form.adForm.address.value = (DefaultСoordinate.X + MAP_MAIN_PIN_SIZE.halfSize) + ', ' + (top + MAP_MAIN_PIN_SIZE.halfSize);
   }
 
   function getLimitDragArea(area) {
@@ -155,7 +160,6 @@
 
     return values;
   }
-
 
   function onMapPopupEscPress(evt) {
     if (evt.keyCode === KEYCODES.esc) {
