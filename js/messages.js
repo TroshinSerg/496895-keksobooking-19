@@ -12,16 +12,17 @@
   };
 
   function onErrorPopupClick(evt) {
-    window.form.deactivatePage();
     MAIN.querySelector('.error').remove();
     evt.currentTarget.removeEventListener('click', onErrorPopupButtonClick);
+    window.form.deactivatePage();
   }
 
   function onErrorPopupButtonClick(evt) {
     evt.preventDefault();
+    event.stopPropagation();
+    window.form.deactivatePage();
     MAIN.querySelector('.error').remove();
     evt.currentTarget.removeEventListener('click', onErrorPopupButtonClick);
-    window.form.deactivatePage();
   }
 
   function onSuccessPopupClick() {

@@ -6,7 +6,7 @@
     UPLOAD: 'https://js.dump.academy/keksobooking'
   };
 
-  var TIMEOUT = 3000;
+  var TIMEOUT = 1000;
   var StatusCode = {
     OK: 200
   };
