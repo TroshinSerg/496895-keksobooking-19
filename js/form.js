@@ -20,19 +20,18 @@
   var MAX_PRICE = 1000000;
   var AD_FORM = document.forms[1];
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
+  var AD_FORM_RESET = AD_FORM.querySelector('.ad-form__reset');
   var INVALID_FIELD_BORDER_COLOR = 'red';
   var SELECT_NAME_TIMEIN = 'timein';
   var SELECT_NAME_TIMEOUT = 'timeout';
   var TITLE_MIN_LENGTH = 30;
+  var isFormActive = false;
 
   var UTILS = {
     adForm: AD_FORM,
     formsNodes: FORMS_NODES,
-    enableElements: function (htmlCollection) {
-      htmlCollection.forEach(function (node) {
-        node.removeAttribute('disabled');
-      });
-    },
+    deactivatePage: deactivatePage,
+    changeState: changeStateForms,
     changePriceField: function () {
       var typeValue = AD_FORM.type.value.toUpperCase();
       AD_FORM.price.min = OfferTypeMinPrice[typeValue];
@@ -90,12 +89,24 @@
       node: AD_FORM_SUBMIT,
       eventType: 'click',
       handler: onAdFormSubmit
+    },
+    {
+      node: AD_FORM_RESET,
+      eventType: 'click',
+      handler: onAdFormResetClick
     }
   ];
 
-  function disableElements(htmlCollection) {
-    htmlCollection.forEach(function (node) {
-      node.disabled = 'disabled';
+  function changeStateForms() {
+    if (isFormActive) {
+      AD_FORM.classList.remove('ad-form--disabled');
+      isFormActive = false;
+    } else {
+      AD_FORM.classList.add('ad-form--disabled');
+      isFormActive = true;
+    }
+    FORMS_NODES.forEach(function (node) {
+      node.disabled = isFormActive;
     });
   }
 
@@ -108,8 +119,8 @@
   }
 
   function onCapacityChange() {
-    var roomsCount = +AD_FORM.rooms.value;
-    var guestCount = +AD_FORM.capacity.value;
+    var roomsCount = parseInt(AD_FORM.rooms.value, 10);
+    var guestCount = parseInt(AD_FORM.capacity.value, 10);
 
     if (roomsCount !== 100 && roomsCount < guestCount) {
       addFieldBorderColor(AD_FORM.capacity);
@@ -140,19 +151,22 @@
     onPriceInput();
   }
 
-  function onPriceInput() {
+  function setInvalidState(target, message) {
+    addFieldBorderColor(target);
+    target.setCustomValidity(message);
+    return false;
+  }
+
+  function onPriceInput(evt) {
     var typeValue = AD_FORM.type.value.toUpperCase();
-    var currentValue = +AD_FORM.price.value;
+    var currentValue = parseInt(AD_FORM.price.value, 10);
 
     if (currentValue < OfferTypeMinPrice[typeValue]) {
-      addFieldBorderColor(AD_FORM.price);
-      AD_FORM.price.setCustomValidity(ErrorMessage.MIN_PRICE);
-      return false;
+      return setInvalidState(evt.target, ErrorMessage.MIN_PRICE);
     } else if (currentValue > MAX_PRICE) {
-      addFieldBorderColor(AD_FORM.price);
-      AD_FORM.price.setCustomValidity(ErrorMessage.MAX_PRICE);
-      return false;
+      return setInvalidState(evt.target, ErrorMessage.MAX_PRICE);
     }
+
     removeFieldBorderColor(AD_FORM.price);
     AD_FORM.price.setCustomValidity('');
     return true;
@@ -165,11 +179,15 @@
   }
 
   function onSuccessSend() {
-    window.messages.createSuccessPopup();
+    window.messages.renderSuccessPopup();
   }
-  
+
   function onErrorSend() {
-    window.messages.createErrorPopup();
+    window.messages.renderErrorPopup();
+  }
+
+  function onAdFormResetClick() {
+    deactivatePage();
   }
 
   function onAdFormSubmit(evt) {
@@ -179,7 +197,16 @@
     }
   }
 
-  disableElements(FORMS_NODES);
+  function deactivatePage() {
+    AD_FORM.classList.add('ad-form--disabled');
+    AD_FORM.reset();
+    AD_FORM.type.removeEventListener('change', onTypeChange);
+    window.map.deactivate();
+    window.map.onMapPopupCloseClick();
+    changeStateForms();
+  }
+
+  changeStateForms();
   UTILS.addHandlers(HANDLERS);
   window.form = UTILS;
 })();

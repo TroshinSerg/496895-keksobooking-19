@@ -11,13 +11,17 @@
     OK: 200
   };
 
-  window.server = function(onError, onSuccess, data) {
+  window.server = function (onError, onSuccess, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
-      xhr.status === StatusCode.OK ? onSuccess(xhr.response) : onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      if (xhr.status === StatusCode.OK) {
+        onSuccess(xhr.response);
+      } else {
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
     xhr.addEventListener('error', function () {
@@ -35,5 +39,5 @@
       xhr.open('GET', Url.LOAD);
       xhr.send();
     }
-  }
+  };
 })();
