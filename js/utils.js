@@ -13,9 +13,7 @@
       return Math.floor(Math.random() * 2);
     },
     getRandomArray: function (array) {
-      var copyOfArray = array.slice();
-      var randomArray = copyOfArray.filter(this.getZeroOrOne);
-      return randomArray;
+      return array.filter(this.getZeroOrOne);
     },
     pluralize: function (num, endings) {
       var remainder = num % 100;

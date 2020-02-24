@@ -16,7 +16,7 @@
     return clonedPin;
   }
 
-  function createPinsFragment(data) {
+  function renderPins(data) {
     var fragment = document.createDocumentFragment();
 
     data.forEach(function (item, index) {
@@ -29,5 +29,5 @@
     return fragment;
   }
 
-  window.pin.createPinsFragment = createPinsFragment;
+  window.pin.render = renderPins;
 })();
