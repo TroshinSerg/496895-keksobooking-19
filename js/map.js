@@ -72,6 +72,7 @@
   function onSuccess(data) {
     window.loadedData = data;
     renderMapElements(window.loadedData);
+    window.form.changeStateFilter(false);
   }
 
   function onError(errorMessage) {

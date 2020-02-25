@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var FORMS_NODES = document.querySelectorAll('form > select, form > fieldset');
-
   var ErrorMessage = {
     MORE_GUEST: 'Гостей больше, чем комнат!',
     NOT_GUEST: 'Не для гостей!',
@@ -18,7 +16,13 @@
   };
 
   var MAX_PRICE = 1000000;
+  var MAX_ROOMS_COUNT = 100;
   var AD_FORM = document.forms[1];
+  var FILTER_FORM = document.forms[0];
+
+  var AD_FORM_NODES = AD_FORM.querySelectorAll('select, fieldset');
+  var FILTER_FORM_NODES = FILTER_FORM.querySelectorAll('select, fieldset');
+
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
   var AD_FORM_RESET = AD_FORM.querySelector('.ad-form__reset');
   var INVALID_FIELD_BORDER_COLOR = 'red';
@@ -29,9 +33,9 @@
 
   var UTILS = {
     adForm: AD_FORM,
-    formsNodes: FORMS_NODES,
     deactivatePage: deactivatePage,
-    changeState: changeStateForms,
+    changeState: changeStateForm,
+    changeStateFilter: changeStateFilter,
     changePriceField: function () {
       var typeValue = AD_FORM.type.value.toUpperCase();
       AD_FORM.price.min = OfferTypeMinPrice[typeValue];
@@ -97,7 +101,7 @@
     }
   ];
 
-  function changeStateForms() {
+  function changeStateForm() {
     if (isFormActive) {
       AD_FORM.classList.remove('ad-form--disabled');
       isFormActive = false;
@@ -105,8 +109,14 @@
       AD_FORM.classList.add('ad-form--disabled');
       isFormActive = true;
     }
-    FORMS_NODES.forEach(function (node) {
+    AD_FORM_NODES.forEach(function (node) {
       node.disabled = isFormActive;
+    });
+  }
+
+  function changeStateFilter(boolian) {
+    FILTER_FORM_NODES.forEach(function (node) {
+      node.disabled = boolian;
     });
   }
 
@@ -118,18 +128,14 @@
     field.removeAttribute('style');
   }
 
-  function onCapacityChange() {
+  function onCapacityChange(evt) {
     var roomsCount = parseInt(AD_FORM.rooms.value, 10);
     var guestCount = parseInt(AD_FORM.capacity.value, 10);
 
-    if (roomsCount !== 100 && roomsCount < guestCount) {
-      addFieldBorderColor(AD_FORM.capacity);
-      AD_FORM.capacity.setCustomValidity(ErrorMessage.MORE_GUEST);
-      return false;
-    } else if (roomsCount === 100 && guestCount !== 0) {
-      addFieldBorderColor(AD_FORM.capacity);
-      AD_FORM.capacity.setCustomValidity(ErrorMessage.NOT_GUEST);
-      return false;
+    if (roomsCount !== MAX_ROOMS_COUNT && roomsCount < guestCount) {
+      return setInvalidState(AD_FORM.capacity, ErrorMessage.MORE_GUEST);
+    } else if (roomsCount === MAX_ROOMS_COUNT && guestCount !== 0) {
+      return setInvalidState(AD_FORM.capacity, ErrorMessage.NOT_GUEST)
     }
     removeFieldBorderColor(AD_FORM.capacity);
     AD_FORM.capacity.setCustomValidity('');
@@ -203,10 +209,12 @@
     AD_FORM.type.removeEventListener('change', onTypeChange);
     window.map.deactivate();
     window.map.onMapPopupCloseClick();
-    changeStateForms();
+    changeStateForm();
+    changeStateFilter(true);
   }
 
-  changeStateForms();
+  changeStateForm();
+  changeStateFilter(true);
   UTILS.addHandlers(HANDLERS);
   window.form = UTILS;
 })();
