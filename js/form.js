@@ -31,23 +31,6 @@
   var TITLE_MIN_LENGTH = 30;
   var isFormActive = false;
 
-  var UTILS = {
-    adForm: AD_FORM,
-    deactivatePage: deactivatePage,
-    changeState: changeStateForm,
-    changeStateFilter: changeStateFilter,
-    changePriceField: function () {
-      var typeValue = AD_FORM.type.value.toUpperCase();
-      AD_FORM.price.min = OfferTypeMinPrice[typeValue];
-      AD_FORM.price.placeholder = OfferTypeMinPrice[typeValue];
-    },
-    addHandlers: function (handlers) {
-      handlers.forEach(function (item) {
-        item.node.addEventListener(item.eventType, item.handler);
-      });
-    }
-  };
-
   var HANDLERS = [
     {
       node: AD_FORM.type,
@@ -101,6 +84,18 @@
     }
   ];
 
+  function changePriceField() {
+    var typeValue = AD_FORM.type.value.toUpperCase();
+    AD_FORM.price.min = OfferTypeMinPrice[typeValue];
+    AD_FORM.price.placeholder = OfferTypeMinPrice[typeValue];
+  }
+
+  function addHandlers(handlers) {
+    handlers.forEach(function (item) {
+      item.node.addEventListener(item.eventType, item.handler);
+    });
+  }
+
   function changeStateForm() {
     if (isFormActive) {
       AD_FORM.classList.remove('ad-form--disabled');
@@ -153,7 +148,7 @@
   }
 
   function onTypeChange() {
-    UTILS.changePriceField();
+    changePriceField();
     onPriceInput();
   }
 
@@ -215,6 +210,13 @@
 
   changeStateForm();
   changeStateFilter(true);
-  UTILS.addHandlers(HANDLERS);
-  window.form = UTILS;
+  addHandlers(HANDLERS);
+  window.form = {
+    adForm: AD_FORM,
+    deactivatePage: deactivatePage,
+    changeState: changeStateForm,
+    changeStateFilter: changeStateFilter,
+    changePriceField: changePriceField,
+    addHandlers: addHandlers
+  };
 })();
