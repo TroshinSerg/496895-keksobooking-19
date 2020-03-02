@@ -51,18 +51,21 @@
   function onMapPinClick(evt) {
     evt.preventDefault();
     var currentPin = evt.currentTarget;
-    window.map.onMapPopupCloseClick();
+    onMapPopupCloseClick();
     window.card.renderMapPopup(window.loadedData[currentPin.dataset.id]);
     currentPin.classList.add('map__pin--active');
     document.addEventListener('keydown', onMapPopupEscPress);
   }
 
   function deactivateMap() {
-    var pins = MAP_PIN_LIST.querySelectorAll('.map__pin:not(.map__pin--main)');
     MAP.classList.add('map--faded');
     MAP_MAIN_PIN.style.top = MainPin.DEFAULT_Y + 'px';
     MAP_MAIN_PIN.style.left = MainPin.DEFAULT_X + 'px';
+    removePins();
+  }
 
+  function removePins() {
+    var pins = MAP_PIN_LIST.querySelectorAll('.map__pin:not(.map__pin--main)');
     pins.forEach(function (pin) {
       pin.remove();
     });
@@ -70,7 +73,7 @@
 
   function onSuccess(data) {
     window.loadedData = data;
-    renderMapElements(window.loadedData);
+    renderMapElements(window.filter.start());
     window.form.changeStateFilter(false);
   }
 
@@ -146,12 +149,12 @@
 
     if (MAP.classList.contains('map--faded')) {
       activatePage();
-      window.server(onError, onSuccess);
     }
   }
 
   function activatePage() {
     MAP.classList.remove('map--faded');
+    window.server(onError, onSuccess);
     window.form.changeState();
     window.form.changePriceField();
   }
@@ -202,6 +205,7 @@
     mapMainPin: MAP_MAIN_PIN,
     MainPin: MainPin,
     deactivate: deactivateMap,
+    removePins: removePins,
     onMapPopupCloseClick: onMapPopupCloseClick,
     onMapPinClick: onMapPinClick
   };
