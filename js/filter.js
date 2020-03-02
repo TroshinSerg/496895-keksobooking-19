@@ -29,9 +29,13 @@
     return HOUSING_PRICE.value === any || ((HOUSING_PRICE.value === HousingPriceValue.MIDDLE) && (item.offer.price > Price.TEN && item.offer.price < Price.FIFTY)) || ((HOUSING_PRICE.value === HousingPriceValue.LOW) && (item.offer.price < Price.TEN)) || ((HOUSING_PRICE.value === HousingPriceValue.HIGH) && (item.offer.price > Price.FIFTY));
   }
 
+  function checkRoomsFilter(item) {
+    return HOUSING_ROOMS.value === any || parseInt(HOUSING_ROOMS.value, 10) === item.offer.rooms;
+  }
+
   function filter() {
     return window.loadedData.filter(function (item) {
-      return checkTypeFilter(item) && checkPriceFilter(item);
+      return checkTypeFilter(item) && checkPriceFilter(item) && checkRoomsFilter(item);
     }).slice(0, PIN_NUMBERS);
   }
 
