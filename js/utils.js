@@ -12,7 +12,7 @@
   }
 
   function getRandomElement(array, isRemove) {
-    var randomIndex = this.getRandomNum(0, array.length - 1);
+    var randomIndex = getRandomNum(0, array.length - 1);
     return (isRemove) ? array.splice(randomIndex, 1).toString() : array[randomIndex];
   }
 
@@ -21,7 +21,7 @@
   }
 
   function getRandomArray(array) {
-    return array.filter(this.getZeroOrOne);
+    return array.filter(getZeroOrOne);
   }
 
   function pluralize(num, endings) {
@@ -37,9 +37,11 @@
   function isEnterKeyCode(keyCode) {
     return keyCode === KeyCode.ENTER;
   }
+
   function isSpaceKeyCode(keyCode) {
     return keyCode === KeyCode.SPACE;
   }
+
   function isEscKeyCode(keyCode) {
     return keyCode === KeyCode.ESC;
   }
