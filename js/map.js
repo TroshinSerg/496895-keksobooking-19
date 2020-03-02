@@ -2,6 +2,7 @@
 
 (function () {
   var MAP = document.querySelector('.map');
+  var FILTER_FORM = MAP.querySelector('.map__filters');
   var MAP_PIN_LIST = MAP.querySelector('.map__pins');
   var MAP_MAIN_PIN = MAP.querySelector('.map__pin--main');
 
@@ -28,7 +29,18 @@
       eventType: 'keydown',
       handler: onMapPinMainKeydown
     },
+    {
+      node: FILTER_FORM,
+      eventType: 'change',
+      handler: onFilterFormChange
+    }
   ];
+
+  function onFilterFormChange() {
+    removePins();
+    onMapPopupCloseClick();
+    renderMapElements(window.filter.start());
+  }
 
   function onMapPopupCloseClick() {
     removePinActiveClass();
