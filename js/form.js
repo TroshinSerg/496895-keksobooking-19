@@ -123,14 +123,14 @@
     field.removeAttribute('style');
   }
 
-  function onCapacityChange(evt) {
+  function onCapacityChange() {
     var roomsCount = parseInt(AD_FORM.rooms.value, 10);
     var guestCount = parseInt(AD_FORM.capacity.value, 10);
 
     if (roomsCount !== MAX_ROOMS_COUNT && roomsCount < guestCount) {
       return setInvalidState(AD_FORM.capacity, ErrorMessage.MORE_GUEST);
     } else if (roomsCount === MAX_ROOMS_COUNT && guestCount !== 0) {
-      return setInvalidState(AD_FORM.capacity, ErrorMessage.NOT_GUEST)
+      return setInvalidState(AD_FORM.capacity, ErrorMessage.NOT_GUEST);
     }
     removeFieldBorderColor(AD_FORM.capacity);
     AD_FORM.capacity.setCustomValidity('');
@@ -213,6 +213,7 @@
   addHandlers(HANDLERS);
   window.form = {
     adForm: AD_FORM,
+    filterForm: FILTER_FORM,
     deactivatePage: deactivatePage,
     changeState: changeStateForm,
     changeStateFilter: changeStateFilter,
