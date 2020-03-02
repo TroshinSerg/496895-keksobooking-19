@@ -17,12 +17,6 @@
     HALF_SIZE_WITH_POINT: 55
   };
 
-  var KEYCODES = {
-    esc: 27,
-    enter: 13,
-    space: 32
-  };
-
   var HANDLERS = [
     {
       node: MAP_MAIN_PIN,
@@ -77,7 +71,7 @@
   }
 
   function onMapPinMainKeydown(evt) {
-    if (evt.keyCode === KEYCODES.enter || evt.keyCode === KEYCODES.space) {
+    if (window.utils.isEnter(evt.keyCode) || window.utils.isSpace(evt.keyCode)) {
       activatePage();
     }
   }
@@ -168,7 +162,7 @@
   }
 
   function onMapPopupEscPress(evt) {
-    if (evt.keyCode === KEYCODES.esc) {
+    if (window.utils.isEsc(evt.keyCode)) {
       onMapPopupCloseClick();
     }
   }
