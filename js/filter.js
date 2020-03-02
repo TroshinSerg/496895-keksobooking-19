@@ -32,10 +32,14 @@
   function checkRoomsFilter(item) {
     return HOUSING_ROOMS.value === any || parseInt(HOUSING_ROOMS.value, 10) === item.offer.rooms;
   }
+  
+  function checkGuestsFilter(item) {
+    return HOUSING_GUESTS.value === any || parseInt(HOUSING_GUESTS.value, 10) === item.offer.guests;
+  }
 
   function filter() {
     return window.loadedData.filter(function (item) {
-      return checkTypeFilter(item) && checkPriceFilter(item) && checkRoomsFilter(item);
+      return checkTypeFilter(item) && checkPriceFilter(item) && checkRoomsFilter(item) && checkGuestsFilter(item);
     }).slice(0, PIN_NUMBERS);
   }
 
