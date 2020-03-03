@@ -37,9 +37,26 @@
     return HOUSING_GUESTS.value === any || parseInt(HOUSING_GUESTS.value, 10) === item.offer.guests;
   }
 
+  function getChecked() {
+    var checkedFeatures = [];
+    FEATURES.forEach(function (feature) {
+      if (feature.checked) {
+        checkedFeatures.push(feature);
+      }
+    });
+    return checkedFeatures;
+  }
+
+  function checkFeaturesFirter(item) {
+    var checkedFeatures = getChecked();
+    return checkedFeatures.every(function (feature) {
+      return item.offer.features.includes(feature.value);
+    });
+  }
+
   function filter() {
     return window.loadedData.filter(function (item) {
-      return checkTypeFilter(item) && checkPriceFilter(item) && checkRoomsFilter(item) && checkGuestsFilter(item);
+      return checkTypeFilter(item) && checkPriceFilter(item) && checkRoomsFilter(item) && checkGuestsFilter(item) && checkFeaturesFirter(item);
     }).slice(0, PIN_NUMBERS);
   }
 
