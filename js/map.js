@@ -32,7 +32,7 @@
     {
       node: FILTER_FORM,
       eventType: 'change',
-      handler: onFilterFormChange
+      handler: window.debounce(onFilterFormChange)
     }
   ];
 
