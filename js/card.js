@@ -86,15 +86,26 @@
     clonedNodes.capacity.textContent = item.offer.rooms + ' ' + window.utils.pluralize(item.offer.rooms, VARIANTS_WORD_ROOMS) + ' для ' + item.offer.guests + ' ' + window.utils.pluralize(item.offer.guests, VARIANTS_WORD_GUESTS) + '.';
     clonedNodes.time.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
     clonedNodes.description.textContent = item.offer.description;
+    if (clonedNodes.description.textContent === '') {
+      clonedNodes.description.remove();
+    }
     clonedNodes.avatar.src = item.author.avatar;
 
     clonedNodes.featureList.innerHTML = '';
     var featuresFragment = renderFeatures(item.offer.features, clonedNodes.features);
-    clonedNodes.featureList.appendChild(featuresFragment);
+    if (clonedNodes.featureList.innerHTML === '') {
+      clonedNodes.featureList.remove();
+    } else {
+      clonedNodes.featureList.appendChild(featuresFragment);
+    }
 
     clonedNodes.photoList.innerHTML = '';
     var photosFragment = renderPhotos(item.offer.photos, clonedNodes.photo);
-    clonedNodes.photoList.appendChild(photosFragment);
+    if (clonedNodes.photoList.innerHTML === '') {
+      clonedNodes.photoList.remove();
+    } else {
+      clonedNodes.photoList.appendChild(photosFragment);
+    }
 
     fragment.appendChild(clonedPopup);
     window.map.MAP.insertBefore(fragment, MAP_FILTERS_CONTAINER);
