@@ -23,6 +23,18 @@
   var AD_FORM_NODES = AD_FORM.querySelectorAll('select, fieldset');
   var FILTER_FORM_NODES = FILTER_FORM.querySelectorAll('select, fieldset');
 
+  var Avatar = {
+    FILE_CHOOSER: AD_FORM.avatar,
+    PREVIEW: AD_FORM.querySelector('.ad-form-header__preview'),
+    PREVIEW_IMG: AD_FORM.querySelector('.ad-form-header__preview img'),
+    DEFAULT_SRC: 'img/muffin-grey.svg'
+  };
+
+  var Photo = {
+    FILE_CHOOSER: AD_FORM.images,
+    PREVIEW: AD_FORM.querySelector('.ad-form__photo')
+  };
+
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
   var AD_FORM_RESET = AD_FORM.querySelector('.ad-form__reset');
   var INVALID_FIELD_BORDER_COLOR = 'red';
@@ -81,6 +93,16 @@
       node: AD_FORM_RESET,
       eventType: 'click',
       handler: onAdFormResetClick
+    },
+    {
+      node: Avatar.FILE_CHOOSER,
+      eventType: 'change',
+      handler: window.fileUpload.start.bind(null, Avatar.FILE_CHOOSER, Avatar.PREVIEW)
+    },
+    {
+      node: Photo.FILE_CHOOSER,
+      eventType: 'change',
+      handler: window.fileUpload.start.bind(null, Photo.FILE_CHOOSER, Photo.PREVIEW)
     }
   ];
 
