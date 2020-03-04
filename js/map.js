@@ -32,7 +32,7 @@
     {
       node: FILTER_FORM,
       eventType: 'change',
-      handler: onFilterFormChange
+      handler: window.debounce(onFilterFormChange)
     }
   ];
 
@@ -52,7 +52,7 @@
     evt.preventDefault();
     var currentPin = evt.currentTarget;
     onMapPopupCloseClick();
-    window.card.renderMapPopup(window.loadedData[currentPin.dataset.id]);
+    window.card.renderMapPopup(window.filter.start()[currentPin.dataset.id]);
     currentPin.classList.add('map__pin--active');
     document.addEventListener('keydown', onMapPopupEscPress);
   }
