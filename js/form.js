@@ -226,8 +226,14 @@
     AD_FORM.type.removeEventListener('change', onTypeChange);
     window.map.deactivate();
     window.map.onMapPopupCloseClick();
+    resetUploadFile();
     changeStateForm();
     changeStateFilter(true);
+  }
+
+  function resetUploadFile() {
+    Avatar.PREVIEW_IMG.src = Avatar.DEFAULT_SRC;
+    Photo.PREVIEW.firstChild.remove();
   }
 
   changeStateForm();
