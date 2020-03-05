@@ -125,6 +125,12 @@
         startCoords.x = moveEvt.clientX;
         MAP_MAIN_PIN.style.left = currentCoords.x + 'px';
         setAddressField(MainPin.SIZE_WITH_POINT);
+      } else if (currentCoords.x < limitDragArea.minX) {
+        MAP_MAIN_PIN.style.left = limitDragArea.minX + 'px';
+        setAddressField(MainPin.SIZE_WITH_POINT);
+      } else if (currentCoords.x > limitDragArea.maxX) {
+        MAP_MAIN_PIN.style.left = limitDragArea.maxX + 'px';
+        setAddressField(MainPin.SIZE_WITH_POINT);
       }
     }
 
