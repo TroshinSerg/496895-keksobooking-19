@@ -138,15 +138,16 @@
       upEvt.preventDefault();
 
       if (isDrag) {
-        var onMapPinMainClickPreventDefault = function (evtPrevDef) {
-          evtPrevDef.preventDefault();
-          MAP_MAIN_PIN.removeEventListener('click', onMapPinMainClickPreventDefault);
-        };
+        MAP_MAIN_PIN.addEventListener('click', onMapPinMainClickPreventDefault);
       }
 
-      MAP_MAIN_PIN.addEventListener('click', onMapPinMainClickPreventDefault);
       document.removeEventListener('mousemove', onMapPinMainMousemove);
       document.removeEventListener('mouseup', onMapPinMainMouseup);
+    }
+
+    function onMapPinMainClickPreventDefault(evtPrevDef) {
+      evtPrevDef.preventDefault();
+      MAP_MAIN_PIN.removeEventListener('click', onMapPinMainClickPreventDefault);
     }
 
     document.addEventListener('mousemove', onMapPinMainMousemove);
