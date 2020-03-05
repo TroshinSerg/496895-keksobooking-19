@@ -233,7 +233,9 @@
 
   function resetUploadFile() {
     Avatar.PREVIEW_IMG.src = Avatar.DEFAULT_SRC;
-    Photo.PREVIEW.firstChild.remove();
+    if (Photo.PREVIEW.firstChild) {
+      Photo.PREVIEW.firstChild.remove();
+    }
   }
 
   changeStateForm();
