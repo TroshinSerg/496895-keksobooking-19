@@ -13,7 +13,7 @@
     DEFAULT_X: parseFloat(MAP_MAIN_PIN.style.left),
     DEFAULT_Y: parseFloat(MAP_MAIN_PIN.style.top),
     SIZE: 65,
-    SIZE_WITH_POINT: 77,
+    SIZE_WITH_POINT: 87,
     HALF_SIZE: 33,
     HALF_SIZE_WITH_POINT: 55
   };
