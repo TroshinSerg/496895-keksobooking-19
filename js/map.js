@@ -15,7 +15,8 @@
     SIZE: 65,
     SIZE_WITH_POINT: 87,
     HALF_SIZE: 33,
-    HALF_SIZE_WITH_POINT: 55
+    HALF_SIZE_WITH_POINT: 55,
+    OFFSET_Y: 120
   };
 
   var HANDLERS = [
@@ -115,9 +116,15 @@
         y: MAP_MAIN_PIN.offsetTop - shift.y
       };
 
-      if (currentCoords.y >= limitDragArea.minY && currentCoords.y <= MAP_MAX_Y) {
+      if (currentCoords.y >= limitDragArea.minY && currentCoords.y <= limitDragArea.maxY) {
         startCoords.y = moveEvt.clientY;
         MAP_MAIN_PIN.style.top = currentCoords.y + 'px';
+        setAddressField(MainPin.SIZE_WITH_POINT);
+      } else if (currentCoords.y < limitDragArea.minY) {
+        MAP_MAIN_PIN.style.top = limitDragArea.minY + 'px';
+        setAddressField(MainPin.SIZE_WITH_POINT);
+      } else if (currentCoords.y > limitDragArea.maxY) {
+        MAP_MAIN_PIN.style.top = limitDragArea.maxY + 'px';
         setAddressField(MainPin.SIZE_WITH_POINT);
       }
 
@@ -177,7 +184,8 @@
     var values = {
       minX: -MainPin.HALF_SIZE,
       maxX: area.offsetWidth - MainPin.HALF_SIZE,
-      minY: MAP_MIN_Y - MainPin.SIZE_WITH_POINT + MainPin.SIZE_WITH_POINT
+      minY: MAP_MIN_Y - MainPin.OFFSET_Y,
+      maxY: MAP_MAX_Y - MainPin.OFFSET_Y
     };
 
     return values;
