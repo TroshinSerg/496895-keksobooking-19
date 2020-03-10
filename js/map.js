@@ -13,9 +13,10 @@
     DEFAULT_X: parseFloat(MAP_MAIN_PIN.style.left),
     DEFAULT_Y: parseFloat(MAP_MAIN_PIN.style.top),
     SIZE: 65,
-    SIZE_WITH_POINT: 77,
+    SIZE_WITH_POINT: 87,
     HALF_SIZE: 33,
-    HALF_SIZE_WITH_POINT: 55
+    HALF_SIZE_WITH_POINT: 55,
+    OFFSET_Y: 120
   };
 
   var HANDLERS = [
@@ -115,32 +116,34 @@
         y: MAP_MAIN_PIN.offsetTop - shift.y
       };
 
-      if (currentCoords.y >= limitDragArea.minY && currentCoords.y <= MAP_MAX_Y) {
-        startCoords.y = moveEvt.clientY;
-        MAP_MAIN_PIN.style.top = currentCoords.y + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      }
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
 
-      if (currentCoords.x >= limitDragArea.minX && currentCoords.x <= limitDragArea.maxX) {
-        startCoords.x = moveEvt.clientX;
-        MAP_MAIN_PIN.style.left = currentCoords.x + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      }
+      MAP_MAIN_PIN.style.top = (currentCoords.y >= limitDragArea.minY && currentCoords.y <= limitDragArea.maxY) ? currentCoords.y + 'px' : getLimitCoords(currentCoords.y, limitDragArea.minY, limitDragArea.maxY) + 'px';
+      MAP_MAIN_PIN.style.left = (currentCoords.x >= limitDragArea.minX && currentCoords.x <= limitDragArea.maxX) ? currentCoords.x + 'px' : getLimitCoords(currentCoords.x, limitDragArea.minX, limitDragArea.maxX) + 'px';
+      setAddressField(MainPin.SIZE_WITH_POINT);
+    }
+
+    function getLimitCoords(currentCoords, limitMin, limitMax) {
+      return (currentCoords < limitMin) ? limitMin : limitMax;
     }
 
     function onMapPinMainMouseup(upEvt) {
       upEvt.preventDefault();
 
       if (isDrag) {
-        var onMapPinMainClickPreventDefault = function (evtPrevDef) {
-          evtPrevDef.preventDefault();
-          MAP_MAIN_PIN.removeEventListener('click', onMapPinMainClickPreventDefault);
-        };
+        MAP_MAIN_PIN.addEventListener('click', onMapPinMainClickPreventDefault);
       }
 
-      MAP_MAIN_PIN.addEventListener('click', onMapPinMainClickPreventDefault);
       document.removeEventListener('mousemove', onMapPinMainMousemove);
       document.removeEventListener('mouseup', onMapPinMainMouseup);
+    }
+
+    function onMapPinMainClickPreventDefault(evtPrevDef) {
+      evtPrevDef.preventDefault();
+      MAP_MAIN_PIN.removeEventListener('click', onMapPinMainClickPreventDefault);
     }
 
     document.addEventListener('mousemove', onMapPinMainMousemove);
@@ -170,7 +173,8 @@
     var values = {
       minX: -MainPin.HALF_SIZE,
       maxX: area.offsetWidth - MainPin.HALF_SIZE,
-      minY: MAP_MIN_Y - MainPin.SIZE_WITH_POINT + MainPin.SIZE_WITH_POINT
+      minY: MAP_MIN_Y - MainPin.OFFSET_Y,
+      maxY: MAP_MAX_Y - MainPin.OFFSET_Y
     };
 
     return values;
