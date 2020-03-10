@@ -5,7 +5,8 @@
     MORE_GUEST: 'Гостей больше, чем комнат!',
     NOT_GUEST: 'Не для гостей!',
     MIN_PRICE: 'Цена ниже минимальной!',
-    MAX_PRICE: 'Цена больше максимальной!'
+    MAX_PRICE: 'Цена больше максимальной!',
+    EMPTY_VALUE: 'Заполните это поле!'
   };
 
   var OfferTypeMinPrice = {
@@ -188,6 +189,8 @@
       return setInvalidState(evt.target, ErrorMessage.MIN_PRICE);
     } else if (currentValue > MAX_PRICE) {
       return setInvalidState(evt.target, ErrorMessage.MAX_PRICE);
+    } else if (!currentValue) {
+      return setInvalidState(AD_FORM.price, ErrorMessage.EMPTY_VALUE);
     }
 
     removeFieldBorderColor(AD_FORM.price);
@@ -215,7 +218,11 @@
 
   function onAdFormSubmit(evt) {
     evt.preventDefault();
-    if (onTitleInput() && onPriceInput() && onCapacityChange()) {
+    var isTitleValid = onTitleInput();
+    var isPriceValid = onPriceInput();
+    var isCapacityValid = onCapacityChange();
+
+    if (isTitleValid && isPriceValid && isCapacityValid) {
       window.server(onErrorSend, onSuccessSend, new FormData(AD_FORM));
     }
   }
