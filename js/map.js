@@ -116,29 +116,18 @@
         y: MAP_MAIN_PIN.offsetTop - shift.y
       };
 
-      if (currentCoords.y >= limitDragArea.minY && currentCoords.y <= limitDragArea.maxY) {
-        startCoords.y = moveEvt.clientY;
-        MAP_MAIN_PIN.style.top = currentCoords.y + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      } else if (currentCoords.y < limitDragArea.minY) {
-        MAP_MAIN_PIN.style.top = limitDragArea.minY + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      } else if (currentCoords.y > limitDragArea.maxY) {
-        MAP_MAIN_PIN.style.top = limitDragArea.maxY + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      }
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
 
-      if (currentCoords.x >= limitDragArea.minX && currentCoords.x <= limitDragArea.maxX) {
-        startCoords.x = moveEvt.clientX;
-        MAP_MAIN_PIN.style.left = currentCoords.x + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      } else if (currentCoords.x < limitDragArea.minX) {
-        MAP_MAIN_PIN.style.left = limitDragArea.minX + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      } else if (currentCoords.x > limitDragArea.maxX) {
-        MAP_MAIN_PIN.style.left = limitDragArea.maxX + 'px';
-        setAddressField(MainPin.SIZE_WITH_POINT);
-      }
+      MAP_MAIN_PIN.style.top = (currentCoords.y >= limitDragArea.minY && currentCoords.y <= limitDragArea.maxY) ? currentCoords.y + 'px' : getLimitCoords(currentCoords.y, limitDragArea.minY, limitDragArea.maxY) + 'px';
+      MAP_MAIN_PIN.style.left = (currentCoords.x >= limitDragArea.minX && currentCoords.x <= limitDragArea.maxX) ? currentCoords.x + 'px' : getLimitCoords(currentCoords.x, limitDragArea.minX, limitDragArea.maxX) + 'px';
+      setAddressField(MainPin.SIZE_WITH_POINT);
+    }
+
+    function getLimitCoords(currentCoords, limitMin, limitMax) {
+      return (currentCoords < limitMin) ? limitMin : limitMax;
     }
 
     function onMapPinMainMouseup(upEvt) {
